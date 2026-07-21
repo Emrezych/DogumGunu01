@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Özel biri için hazırlanmış romantik doğum günü deneyimi."
+    />
+    <title>İyi ki Doğdun</title>
+
+    <!-- Tasarımdaki başlık ve metin fontları. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Dekoratif katmanlar: ekran okuyucuların gereksiz okumasını engelliyoruz. -->
+    <div class="background-glow glow-one" aria-hidden="true"></div>
+    <div class="background-glow glow-two" aria-hidden="true"></div>
+    <div class="background-glow glow-three" aria-hidden="true"></div>
+    <div class="floating-hearts" aria-hidden="true">
+      <span>♥</span>
+      <span>♥</span>
+      <span>♥</span>
+      <span>♥</span>
+      <span>♥</span>
+    </div>
+    <div class="cinematic-overlay" aria-hidden="true"></div>
+
+    <main class="welcome-screen" id="welcomeScreen">
+      <section class="welcome-card" aria-labelledby="welcome-title">
+        <p class="eyebrow">SANA ÖZEL HAZIRLANDI PRENSESİM</p>
+        <h1 id="welcome-title">İyi ki varsın</h1>
+        <p class="welcome-text">
+          Küçük bir sürprize hazır ol. Bu gece, bütün güzel anılarımız senin için
+          parlayacak.
+        </p>
+
+        <!-- Alan, buton sabit konuma geçtiğinde kartın boyunun değişmesini engeller. -->
+        <div class="button-area">
+          <!-- Fare yaklaşınca kaçan, mobilde ise her dokunuşta yer değiştiren buton. -->
+          <button class="start-button" id="startButton" type="button">
+            <span class="button-label">Bana Tıkla</span>
+            <span class="button-heart" aria-hidden="true">♥</span>
+          </button>
+        </div>
+
+        <p class="hint" id="welcomeHint" aria-live="polite">
+          Bakalım beni yakalayabilecek misin?
+        </p>
+      </section>
+    </main>
+
+    <!-- Kaçan buton yakalandıktan sonra görünen sinematik gece sahnesi. -->
+    <section class="night-scene" id="nightScene" aria-hidden="true">
+      <div class="moon" aria-hidden="true"></div>
+
+      <div class="star-field" aria-hidden="true">
+        <span style="--x: 8%; --y: 17%; --delay: -1s"></span>
+        <span style="--x: 20%; --y: 32%; --delay: -3s"></span>
+        <span style="--x: 34%; --y: 11%; --delay: -5s"></span>
+        <span style="--x: 49%; --y: 23%; --delay: -2s"></span>
+        <span style="--x: 63%; --y: 8%; --delay: -4s"></span>
+        <span style="--x: 76%; --y: 35%; --delay: -6s"></span>
+        <span style="--x: 91%; --y: 18%; --delay: -3s"></span>
+        <span style="--x: 12%; --y: 67%; --delay: -5s"></span>
+        <span style="--x: 28%; --y: 82%; --delay: -2s"></span>
+        <span style="--x: 46%; --y: 69%; --delay: -7s"></span>
+        <span style="--x: 70%; --y: 76%; --delay: -1s"></span>
+        <span style="--x: 87%; --y: 63%; --delay: -4s"></span>
+      </div>
+
+      <!-- Derinlik hissi veren galaksi ışığı ve düzenli kayan yıldızlar. -->
+      <div class="galaxy-haze" aria-hidden="true"></div>
+      <div class="shooting-stars" aria-hidden="true">
+        <span style="--top: 18%; --right: 8%; --delay: -1s"></span>
+        <span style="--top: 38%; --right: 42%; --delay: -4.5s"></span>
+        <span style="--top: 13%; --right: 64%; --delay: -8s"></span>
+      </div>
+
+      <div class="night-content">
+        <p class="night-eyebrow">GECE YENİ BAŞLIYOR</p>
+        <h2>Bu gece yıldızlar senin için parlıyor.</h2>
+        <p>
+          Her güzel anımız gibi, bu an da gökyüzünde iz bıraksın diye hazırlandım Ceylinimm Prensesiimmm.
+        </p>
+      </div>
+    </section>
+
+    <script src="script.js"></script>
+  </body>
+</html>

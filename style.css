@@ -1,0 +1,585 @@
+/*
+  1. Ders: Temel tasarım değişkenleri ve giriş ekranı.
+  İlerleyen derslerde yeni bölümler bu değişkenleri kullanarak eklenecek.
+*/
+
+:root {
+  --pink: #ff4d94;
+  --soft-pink: #ffb6d9;
+  --pale-pink: #ffd6e8;
+  --cream-pink: #fff0f7;
+  --white: #ffffff;
+  --text: #6b193f;
+  --glass: rgba(255, 255, 255, 0.2);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --shadow: 0 24px 80px rgba(128, 11, 69, 0.22);
+}
+
+/* Tarayıcılar arası tutarlı boyut hesaplama ve varsayılan boşluk temizliği. */
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  min-height: 100%;
+  background-color: var(--pale-pink);
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--text);
+  font-family: "Poppins", sans-serif;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.8), transparent 25%),
+    radial-gradient(circle at 85% 80%, rgba(255, 77, 148, 0.28), transparent 30%),
+    linear-gradient(135deg, #fff7fb 0%, var(--pale-pink) 48%, #ffb0d3 100%);
+}
+
+/* Gece sahnesi aktifken sayfanın pembe zemini görünmez olur. */
+body.is-night-active {
+  background: #07081d;
+}
+
+/* Ekrandaki yumuşak ışık lekeleri, animasyon ile derinlik hissi verir. */
+.background-glow {
+  position: fixed;
+  z-index: -1;
+  width: 30rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(18px);
+  opacity: 0.64;
+  pointer-events: none;
+  animation: drift 12s ease-in-out infinite alternate;
+}
+
+.glow-one {
+  top: -12rem;
+  left: -9rem;
+  background: rgba(255, 77, 148, 0.48);
+}
+
+.glow-two {
+  right: -12rem;
+  bottom: -13rem;
+  background: rgba(255, 255, 255, 0.95);
+  animation-delay: -4s;
+}
+
+.glow-three {
+  top: 38%;
+  left: 48%;
+  width: 18rem;
+  background: rgba(255, 182, 217, 0.8);
+  animation-delay: -8s;
+}
+
+.welcome-screen {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-height: 100vh;
+  padding: 1.5rem;
+  place-items: center;
+  transition: opacity 720ms ease, filter 720ms ease, transform 720ms ease;
+}
+
+/* Kararma anında giriş ekranı bulanıklaşıp hafifçe uzaklaşır. */
+body.is-transitioning .welcome-screen {
+  opacity: 0;
+  filter: blur(14px);
+  transform: scale(1.08);
+}
+
+body.is-night-active .welcome-screen {
+  visibility: hidden;
+}
+
+/* Cam görünümü: yarı saydam zemin, ince kenarlık ve arka plan bulanıklığı. */
+.welcome-card {
+  width: min(100%, 42rem);
+  padding: clamp(2.5rem, 8vw, 5.5rem) clamp(1.5rem, 7vw, 5rem);
+  text-align: center;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 2rem;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  animation: card-enter 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.eyebrow {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: rgba(107, 25, 63, 0.75);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.19em;
+  text-align: center;
+}
+
+h1 {
+  color: var(--pink);
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(4.4rem, 12vw, 7.8rem);
+  font-weight: 400;
+  line-height: 0.95;
+  text-shadow: 0 10px 25px rgba(255, 77, 148, 0.25);
+}
+
+.welcome-text {
+  max-width: 34rem;
+  margin: 1.8rem auto 2.2rem;
+  font-size: clamp(0.92rem, 2.5vw, 1.05rem);
+  line-height: 1.85;
+}
+
+/* Buton kaçarken de kartın iç düzeninin sabit kalmasını sağlar. */
+.button-area {
+  display: grid;
+  min-height: 3.65rem;
+  place-items: center;
+}
+
+.start-button {
+  display: inline-flex;
+  gap: 0.65rem;
+  align-items: center;
+  justify-content: center;
+  min-width: 12.5rem;
+  min-height: 3.65rem;
+  padding: 0.75rem 1.5rem;
+  color: var(--white);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff3385, var(--pink));
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  box-shadow: 0 14px 30px rgba(255, 77, 148, 0.38);
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    left 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    top 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* JavaScript butonu ekran içinde özgürce konumlandırmak istediğinde eklenir. */
+.start-button.is-escaping {
+  position: fixed;
+  z-index: 10;
+  margin: 0;
+}
+
+.start-button.is-ready {
+  background: linear-gradient(135deg, #e89a18, #ff4d94);
+  box-shadow: 0 14px 30px rgba(232, 154, 24, 0.4);
+}
+
+.start-button.is-celebrated {
+  transform: scale(1.04);
+  cursor: default;
+}
+
+.start-button:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 18px 36px rgba(255, 77, 148, 0.48);
+}
+
+.start-button:focus-visible {
+  outline: 3px solid var(--white);
+  outline-offset: 4px;
+}
+
+.start-button:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+.button-heart {
+  font-size: 1.15rem;
+  animation: heartbeat 1.4s ease-in-out infinite;
+}
+
+.hint {
+  min-height: 1.5rem;
+  margin-top: 1.2rem;
+  color: rgba(107, 25, 63, 0.68);
+  font-size: 0.76rem;
+}
+
+/* Arka planda yavaşça yükselen kalpler. */
+.floating-hearts span {
+  position: fixed;
+  bottom: -3rem;
+  z-index: 0;
+  color: rgba(255, 255, 255, 0.88);
+  text-shadow: 0 0 16px rgba(255, 77, 148, 0.45);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  pointer-events: none;
+  animation: float-up 11s linear infinite;
+}
+
+.floating-hearts span:nth-child(1) {
+  left: 8%;
+  animation-delay: -1s;
+}
+
+.floating-hearts span:nth-child(2) {
+  left: 27%;
+  font-size: 1.4rem;
+  animation-delay: -6s;
+}
+
+.floating-hearts span:nth-child(3) {
+  left: 52%;
+  animation-delay: -3s;
+}
+
+.floating-hearts span:nth-child(4) {
+  left: 76%;
+  font-size: 1.25rem;
+  animation-delay: -8s;
+}
+
+.floating-hearts span:nth-child(5) {
+  left: 91%;
+  animation-delay: -4s;
+}
+
+/* Sayfalar arasındaki sinematik siyah perde. */
+.cinematic-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0;
+  background: rgba(4, 3, 17, 0.96);
+  backdrop-filter: blur(0);
+  transition: opacity 720ms ease, backdrop-filter 720ms ease;
+}
+
+body.is-transitioning .cinematic-overlay {
+  opacity: 1;
+  backdrop-filter: blur(14px);
+}
+
+/* Gece gökyüzü, bir sonraki derslerde yeni efektlerle zenginleştirilecek. */
+.night-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  overflow: hidden;
+  padding: 1.5rem;
+  color: #f9efff;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 75% 16%, rgba(141, 104, 218, 0.22), transparent 22%),
+    radial-gradient(circle at 18% 85%, rgba(40, 108, 184, 0.27), transparent 28%),
+    linear-gradient(145deg, #060717 0%, #111238 52%, #241544 100%);
+  place-items: center;
+  transform: scale(1.08);
+  transition: opacity 800ms ease 120ms, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) 120ms;
+}
+
+body.is-night-active .night-scene {
+  pointer-events: auto;
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* JavaScript ile üretilen sakura ve gül yapraklarının ortak katmanı. */
+.petal-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+
+body.is-night-active .petal-layer {
+  opacity: 1;
+}
+
+.falling-petal {
+  position: absolute;
+  top: -4rem;
+  left: var(--x);
+  width: var(--size);
+  aspect-ratio: 0.72;
+  opacity: var(--opacity);
+  animation: petal-fall var(--duration) linear infinite var(--delay);
+  will-change: transform;
+}
+
+.sakura-petal {
+  background: radial-gradient(circle at 35% 30%, #fff9fd 0 10%, #ffb6d9 42%, #ff6eae 100%);
+  border-radius: 100% 0 100% 0;
+  box-shadow: 0 0 12px rgba(255, 160, 204, 0.38);
+}
+
+.rose-petal {
+  background: linear-gradient(135deg, #ff7bad, #ca1d62 80%);
+  border-radius: 90% 10% 85% 15%;
+  box-shadow: inset -3px -4px 8px rgba(113, 0, 43, 0.25);
+}
+
+/* Fare hareketiyle oluşan kısa ömürlü kalp izleri. */
+.cursor-heart-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.cursor-heart {
+  position: fixed;
+  color: #ff9bc7;
+  font-size: var(--heart-size);
+  line-height: 1;
+  pointer-events: none;
+  text-shadow: 0 0 12px rgba(255, 107, 171, 0.85);
+  transform: translate(-50%, -50%);
+  animation: heart-trail 900ms ease-out forwards;
+}
+
+.moon {
+  position: absolute;
+  top: clamp(4rem, 11vh, 8rem);
+  right: clamp(1.5rem, 12vw, 12rem);
+  width: clamp(8rem, 20vw, 15rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 29%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.95) 4%, transparent 4.5%),
+    radial-gradient(circle at 62% 56%, rgba(208, 202, 242, 0.65) 0%, rgba(208, 202, 242, 0.65) 9%, transparent 9.5%),
+    radial-gradient(circle at 35% 70%, rgba(213, 207, 241, 0.54) 0%, rgba(213, 207, 241, 0.54) 6%, transparent 6.5%),
+    radial-gradient(circle at 42% 40%, #fffdf2 0%, #fffdf2 54%, #ddd7ff 100%);
+  box-shadow:
+    0 0 35px rgba(241, 238, 255, 0.8),
+    0 0 90px rgba(183, 162, 255, 0.5),
+    0 0 170px rgba(139, 104, 255, 0.25);
+  animation: moon-breathe 5s ease-in-out infinite alternate;
+}
+
+.star-field span {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  width: 0.25rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.95);
+  animation: twinkle 2.8s ease-in-out infinite var(--delay);
+}
+
+.star-field span:nth-child(3n) {
+  width: 0.42rem;
+}
+
+/* Arka plandaki renklendirilmiş bulutlar, geceye galaksi derinliği ekler. */
+.galaxy-haze {
+  position: absolute;
+  inset: -20%;
+  opacity: 0.75;
+  background:
+    radial-gradient(ellipse at 18% 48%, rgba(143, 90, 255, 0.2), transparent 20%),
+    radial-gradient(ellipse at 74% 72%, rgba(245, 83, 185, 0.16), transparent 24%),
+    radial-gradient(ellipse at 52% 18%, rgba(78, 164, 255, 0.16), transparent 19%);
+  filter: blur(26px);
+  mix-blend-mode: screen;
+  animation: galaxy-drift 16s ease-in-out infinite alternate;
+}
+
+/* Yıldızlar farklı zamanlarda görünüp ekranın çaprazında süzülür. */
+.shooting-stars span {
+  position: absolute;
+  top: var(--top);
+  right: var(--right);
+  width: clamp(4.5rem, 10vw, 8rem);
+  height: 0.12rem;
+  opacity: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.96));
+  border-radius: 999px;
+  box-shadow: 0 0 12px rgba(213, 222, 255, 0.95);
+  transform: rotate(-35deg);
+  animation: shooting-star 9s linear infinite var(--delay);
+}
+
+.shooting-stars span::after {
+  position: absolute;
+  top: 50%;
+  right: -0.15rem;
+  width: 0.32rem;
+  aspect-ratio: 1;
+  content: "";
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 12px 3px rgba(255, 255, 255, 0.7);
+  transform: translateY(-50%);
+}
+
+.night-content {
+  width: min(100%, 40rem);
+  padding: clamp(2rem, 6vw, 4rem);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 2rem;
+  box-shadow: 0 24px 80px rgba(1, 0, 19, 0.44);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.night-eyebrow {
+  margin-bottom: 1rem;
+  color: #d7ccff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+
+.night-content h2 {
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(3.5rem, 9vw, 6rem);
+  font-weight: 400;
+  line-height: 1;
+  text-shadow: 0 0 22px rgba(222, 210, 255, 0.35);
+}
+
+.night-content p:not(.night-eyebrow) {
+  margin: 1.5rem auto 0;
+  color: rgba(249, 239, 255, 0.82);
+  font-size: clamp(0.88rem, 2.4vw, 1rem);
+  line-height: 1.8;
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(2rem) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes drift {
+  to {
+    transform: translate(4rem, 3rem) scale(1.12);
+  }
+}
+
+@keyframes heartbeat {
+  50% {
+    transform: scale(1.25);
+  }
+}
+
+@keyframes float-up {
+  to {
+    opacity: 0;
+    transform: translateY(-115vh) rotate(25deg);
+  }
+}
+
+@keyframes twinkle {
+  50% {
+    opacity: 0.25;
+    transform: scale(0.45);
+  }
+}
+
+@keyframes moon-breathe {
+  to {
+    transform: scale(1.04);
+    box-shadow:
+      0 0 48px rgba(241, 238, 255, 0.9),
+      0 0 115px rgba(183, 162, 255, 0.56),
+      0 0 210px rgba(139, 104, 255, 0.32);
+  }
+}
+
+@keyframes galaxy-drift {
+  to {
+    transform: translate3d(4%, -3%, 0) rotate(4deg) scale(1.06);
+  }
+}
+
+@keyframes shooting-star {
+  0%,
+  72% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(-35deg);
+  }
+
+  75% {
+    opacity: 1;
+  }
+
+  86% {
+    opacity: 0;
+    transform: translate3d(-32vw, 28vh, 0) rotate(-35deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(-32vw, 28vh, 0) rotate(-35deg);
+  }
+}
+
+@keyframes petal-fall {
+  from {
+    transform: translate3d(0, -10vh, 0) rotate(0deg) scale(var(--scale));
+  }
+
+  to {
+    transform: translate3d(var(--drift), 115vh, 0) rotate(var(--rotation)) scale(var(--scale));
+  }
+}
+
+@keyframes heart-trail {
+  to {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--heart-drift)), calc(-50% - 4rem)) scale(1.7) rotate(18deg);
+  }
+}
+
+/* Kullanıcı hareket azaltmayı tercih ettiyse dekoratif animasyonlar durur. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .welcome-card {
+    border-radius: 1.5rem;
+  }
+
+  .welcome-text {
+    line-height: 1.7;
+  }
+
+  .moon {
+    top: 4rem;
+    right: 1.25rem;
+  }
+}
